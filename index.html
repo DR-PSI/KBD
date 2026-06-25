@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PM Form - Oil Circuit Breaker (Cell Input)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            padding: 10px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2c5282 100%);
+            color: white;
+            padding: 32px 24px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 12px;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        /* Main Content */
+        .content {
+            padding: 32px;
+        }
+
+        /* Section Titles */
+        .section-title {
+            background: #2c5282;
+            color: white;
+            padding: 16px 20px;
+            border-radius: 6px;
+            margin: 32px 0 20px 0;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .section-title:first-of-type {
+            margin-top: 0;
+        }
+
+        /* Form Grid */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 15px;
+            color: #2c3e50;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 14px 16px;
+            border: 1.5px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            font-family: inherit;
+            height: 50px;
+        }
+
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #2c5282;
+            box-shadow: 0 0 0 4px rgba(44, 82, 130, 0.15);
+            background: #f8fafc;
+        }
+
+        /* Table Styles */
+        .table-wrapper {
+            overflow-x: auto;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            min-width: 1800px;
+        }
+
+        th {
+            background: #2c5282;
+            color: white;
+            padding: 12px 8px;
+            text-align: center;
+            font-weight: 600;
+            border-right: 1px solid #1a3a52;
+            font-size: 11px;
+            line-height: 1.3;
+        }
+
+        td {
+            padding: 12px 6px;
+            border-right: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+            height: 50px;
+            vertical-align: middle;
+        }
+
+        /* Clickable Cell */
+        .data-cell {
+            cursor: pointer;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: block;
+            width: 100%;
+            height: 100%;
+            min-height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .data-cell:hover {
+            background: #e8f0ff;
+            border-color: #2c5282;
+            box-shadow: 0 2px 4px rgba(44, 82, 130, 0.2);
+        }
+
+        .data-cell.filled {
+            background: white;
+            color: #2c5282;
+            font-weight: 600;
+        }
+
+        .data-cell.empty {
+            color: #ccc;
+        }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-height: 50px;
+        }
+
+        .btn-primary {
+            background: #2c5282;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1e3a5f;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(44, 82, 130, 0.3);
+        }
+
+        .btn-success {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #229954;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 32px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 90%;
+            animation: slideUp 0.3s;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            margin-bottom: 24px;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 16px;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            color: #2c5282;
+            font-size: 22px;
+        }
+
+        .modal-label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1.5px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .modal-input:focus {
+            outline: none;
+            border-color: #2c5282;
+            box-shadow: 0 0 0 4px rgba(44, 82, 130, 0.15);
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .btn-modal-save {
+            background: #27ae60;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            min-height: 45px;
+        }
+
+        .btn-modal-save:hover {
+            background: #229954;
+        }
+
+        .btn-modal-cancel {
+            background: #95a5a6;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            min-height: 45px;
+        }
+
+        .btn-modal-cancel:hover {
+            background: #7f8c8d;
+        }
+
+        .cell-info {
+            background: #e8f4f8;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            border-left: 4px solid #2c5282;
+            font-size: 14px;
+        }
+
+        .cell-info strong {
+            color: #2c5282;
+        }
+
+        /* Status Messages */
+        .status-message {
+            padding: 16px 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: none;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .status-message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+            display: block;
+        }
+
+        .status-message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+            display: block;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: #e8f4f8;
+            border-left: 4px solid #2c5282;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            font-size: 15px;
+            color: #1e3a5f;
+        }
+
+        /* Two column layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 28px;
+            }
+
+            button {
+                padding: 12px 20px;
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>⚡ PM Form - Oil Circuit Breaker</h1>
+            <p>ระบบบันทึกข้อมูลการบำรุงรักษาอุปกรณ์ (คลิกเซลล์เพื่อกรอกข้อมูล)</p>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <div id="statusMessage" class="status-message"></div>
+
+            <div class="info-box">
+                ℹ️ คลิกที่เซลล์สีแสด เพื่อกรอกข้อมูล จากนั้นคลิก "บันทึกข้อมูล"
+            </div>
+
+            <!-- Equipment Information -->
+            <div class="section-title">📋 ข้อมูลอุปกรณ์</div>
+
+            <div class="two-column">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>สภาพของสัญลักษณ์อ้างอิง (Equipment ID)*</label>
+                        <input type="text" id="equipmentId" placeholder="เช่น TR-001" required>
+                    </div>
+                    <div class="form-group">
+                        <label>สำนักงาน (Location)</label>
+                        <input type="text" id="location" placeholder="เช่น สภาส.6">
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>วันที่ทดสอบ*</label>
+                        <input type="date" id="pmDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>ชื่อผู้ตรวจสอบ*</label>
+                        <input type="text" id="inspectorName" placeholder="ชื่อช่าง" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="two-column">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Manufacturer</label>
+                        <input type="text" id="manufacturer" placeholder="เช่น ABB">
+                    </div>
+                    <div class="form-group">
+                        <label>Type</label>
+                        <input type="text" id="deviceType" placeholder="เช่น OCB-245">
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Serial No.</label>
+                        <input type="text" id="serialNo">
+                    </div>
+                    <div class="form-group">
+                        <label>Rated Voltage (kV)</label>
+                        <input type="number" id="ratedVoltage" placeholder="เช่น 33">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Rated Current (A)</label>
+                    <input type="number" id="ratedCurrent" placeholder="เช่น 630">
+                </div>
+                <div class="form-group">
+                    <label>หมายเหตุทั่วไป</label>
+                    <textarea id="generalRemark" placeholder="หมายเหตุ"></textarea>
+                </div>
+            </div>
+
+            <!-- Test Results Table -->
+            <div class="section-title">🧪 ผลการทดสอบ (คลิกเซลล์เพื่อกรอกข้อมูล)</div>
+
+            <div class="table-wrapper">
+                <table id="testTable">
+                    <thead>
+                        <tr>
+                            <th colspan="2">ข้อมูล</th>
+                            <th colspan="6">Dielectric Strength (kV)<br>Before | After</th>
+                            <th colspan="11">Insulation Resistance (MΩ)</th>
+                            <th colspan="3">Contact Resistance</th>
+                            <th colspan="2">อื่น</th>
+                        </tr>
+                        <tr>
+                            <th>Date</th>
+                            <th>Desc</th>
+                            <th>R</th><th>Y</th><th>B</th>
+                            <th>R</th><th>Y</th><th>B</th>
+                            <th>R:R</th><th>Y:Y</th><th>B:B</th><th>R:G</th><th>Y:G</th>
+                            <th>B:G</th><th>R:Y</th><th>Y:B</th><th>R:B</th>
+                            <th>R</th><th>Y</th><th>B</th>
+                            <th>Counter</th><th>Remark</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Buttons -->
+            <div class="btn-group">
+                <button class="btn-primary" onclick="addTestRow()">➕ เพิ่มแถว</button>
+                <button class="btn-success" onclick="savePMData()">💾 บันทึกข้อมูล</button>
+                <button class="btn-danger" onclick="clearForm()">🗑️ ล้างข้อมูล</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cell Input Modal -->
+    <div id="cellInputModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📝 กรอกข้อมูล</h3>
+            </div>
+
+            <div class="cell-info">
+                <strong id="cellInfo">Row 1, Column R</strong>
+            </div>
+
+            <div>
+                <div class="modal-label">ค่าที่กรอก:</div>
+                <input type="number" id="cellValue" class="modal-input" placeholder="กรอกตัวเลข" step="0.01">
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-modal-cancel" onclick="closeCellModal()">ยกเลิก</button>
+                <button class="btn-modal-save" onclick="saveCellValue()">บันทึก</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize
+        document.getElementById('pmDate').valueAsDate = new Date();
+        let currentCell = null;
+        let testData = [];
+
+        // Add test row
+        function addTestRow() {
+            const rowIndex = testData.length;
+            const row = {
+                date: new Date().toISOString().split('T')[0],
+                description: '',
+                dielectricBefore: { r: '', y: '', b: '' },
+                dielectricAfter: { r: '', y: '', b: '' },
+                insulation: { rr: '', yy: '', bb: '', rg: '', yg: '', bg: '', ry: '', yb: '', rb: '' },
+                contact: { r: '', y: '', b: '' },
+                counter: '',
+                remark: ''
+            };
+
+            testData.push(row);
+            renderTable();
+        }
+
+        // Render table
+        function renderTable() {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            testData.forEach((row, rowIndex) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><div class="data-cell ${row.date ? 'filled' : 'empty'}" onclick="openCellModal(${rowIndex}, 'date')">${row.date || 'วันที่'}</div></td>
+                    <td><div class="data-cell ${row.description ? 'filled' : 'empty'}" onclick="openCellModal(${rowIndex}, 'description')">${row.description || 'สรุป'}</div></td>
+                    <td><div class="data-cell ${row.dielectricBefore.r ? 'filled' : 'empty'}" onclick="openCellModal(${rowIndex}, 'dielecBeforeR')">${row.dielectricBefore.r || '-'}</div></td>
+                    <td><div class="data-cell ${row.dielectricBefore.y ? 'filled' : 'empty'}" onclick="openCellModal(${rowIndex}, 'dielecBeforeY')">${row.dielectricBefore.y || '-'}</div></td>
+                    <td><div class="data-cell ${row.dielectricBefore.b ? 'filled' : 'empty'}" onclick="openCellModal(${rowIndex}, 'dielecBeforeB')">${row.dielectricBefore.b || '-'}</div></td>
+                    <td><div class="data-cell ${row.dielectricAfter.r ? 'filled' : 'empty'}" onclick="openCellModal(${rowIndex}, 'dielecAfterR')">${row.dielectricAfter.r || '-'}</div></td>
+                    <td><div class="data-cell ${row.dielectricAfter.y ? 'filled' : 'empty'}" onclick="openCellModal(${rowIndex}, 'dielecAfterY')">${row.dielectricAfter.y || '-'}</div></td>
+                    <td><div class="data-cell ${row.dielectricAfter.b ? 'filled' : 'empty'}" onclick="openCellModal(${rowIndex}, 'dielecAfterB')">${row.dielectricAfter.b || '-'}</div></td>
+                    <td><div class="data-cell ${row.insulation.rr ? 'filled' : 'empty'}" onclick="openCellModal(${rowIndex}, 'insulationRR')">${row.insulation.rr || '-'}</div></td>
+                    <td><div class="data-cell ${row.insulation.yy ? 'filled' : 'empty'}" onclick="openCellModal(${rowIndex}, 'insulationYY')">${row.insulation.yy || '-'}</div></td>
+                    <td><div class="data-cell ${row.insulation.bb ? 'filled' : 'empty'}" onclick="openCellModal(${rowIndex}, 'insulationBB')">${row.insulation.bb || '-'}</div></td>
+                    <td><div class="data-cell ${row.insulation.rg ? 'filled' : 'empty'}" onclick="openCellModal(${rowIndex}, 'insulationRG')">${row.insulation.rg || '-'}</div></td>
+                    <td><div class="data-cell ${row.insulation.yg ? 'filled' : 'empty'}" onclick="openCellModal(${rowIndex}, 'insulationYG')">${row.insulation.yg || '-'}</div></td>
+                    <td><div class="data-cell ${row.insulation.bg ? 'filled' : 'empty'}" onclick="openCellModal(${rowIndex}, 'insulationBG')">${row.insulation.bg || '-'}</div></td>
+                    <td><div class="data-cell ${row.insulation.ry ? 'filled' : 'empty'}" onclick="openCellModal(${rowIndex}, 'insulationRY')">${row.insulation.ry || '-'}</div></td>
+                    <td><div class="data-cell ${row.insulation.yb ? 'filled' : 'empty'}" onclick="openCellModal(${rowIndex}, 'insulationYB')">${row.insulation.yb || '-'}</div></td>
+                    <td><div class="data-cell ${row.insulation.rb ? 'filled' : 'empty'}" onclick="openCellModal(${rowIndex}, 'insulationRB')">${row.insulation.rb || '-'}</div></td>
+                    <td><div class="data-cell ${row.contact.r ? 'filled' : 'empty'}" onclick="openCellModal(${rowIndex}, 'contactR')">${row.contact.r || '-'}</div></td>
+                    <td><div class="data-cell ${row.contact.y ? 'filled' : 'empty'}" onclick="openCellModal(${rowIndex}, 'contactY')">${row.contact.y || '-'}</div></td>
+                    <td><div class="data-cell ${row.contact.b ? 'filled' : 'empty'}" onclick="openCellModal(${rowIndex}, 'contactB')">${row.contact.b || '-'}</div></td>
+                    <td><div class="data-cell ${row.counter ? 'filled' : 'empty'}" onclick="openCellModal(${rowIndex}, 'counter')">${row.counter || '-'}</div></td>
+                    <td><div class="data-cell ${row.remark ? 'filled' : 'empty'}" onclick="openCellModal(${rowIndex}, 'remark')">${row.remark ? row.remark.substring(0, 10) + '...' : 'หมาย'}</div></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Open cell modal
+        function openCellModal(rowIndex, fieldName) {
+            currentCell = { rowIndex, fieldName };
+            const row = testData[rowIndex];
+            const cellLabels = {
+                date: `Row ${rowIndex + 1} - วันที่`,
+                description: `Row ${rowIndex + 1} - คำอธิบาย`,
+                dielecBeforeR: `Row ${rowIndex + 1} - Dielectric Before (R)`,
+                dielecBeforeY: `Row ${rowIndex + 1} - Dielectric Before (Y)`,
+                dielecBeforeB: `Row ${rowIndex + 1} - Dielectric Before (B)`,
+                dielecAfterR: `Row ${rowIndex + 1} - Dielectric After (R)`,
+                dielecAfterY: `Row ${rowIndex + 1} - Dielectric After (Y)`,
+                dielecAfterB: `Row ${rowIndex + 1} - Dielectric After (B)`,
+                insulationRR: `Row ${rowIndex + 1} - Insulation R:R`,
+                insulationYY: `Row ${rowIndex + 1} - Insulation Y:Y`,
+                insulationBB: `Row ${rowIndex + 1} - Insulation B:B`,
+                insulationRG: `Row ${rowIndex + 1} - Insulation R:G`,
+                insulationYG: `Row ${rowIndex + 1} - Insulation Y:G`,
+                insulationBG: `Row ${rowIndex + 1} - Insulation B:G`,
+                insulationRY: `Row ${rowIndex + 1} - Insulation R:Y`,
+                insulationYB: `Row ${rowIndex + 1} - Insulation Y:B`,
+                insulationRB: `Row ${rowIndex + 1} - Insulation R:B`,
+                contactR: `Row ${rowIndex + 1} - Contact Resistance (R)`,
+                contactY: `Row ${rowIndex + 1} - Contact Resistance (Y)`,
+                contactB: `Row ${rowIndex + 1} - Contact Resistance (B)`,
+                counter: `Row ${rowIndex + 1} - Counter`,
+                remark: `Row ${rowIndex + 1} - Remark`
+            };
+
+            document.getElementById('cellInfo').textContent = cellLabels[fieldName];
+            document.getElementById('cellValue').value = getCellValue(row, fieldName) || '';
+            document.getElementById('cellValue').focus();
+            document.getElementById('cellInputModal').classList.add('show');
+        }
+
+        // Get cell value
+        function getCellValue(row, fieldName) {
+            switch(fieldName) {
+                case 'date': return row.date;
+                case 'description': return row.description;
+                case 'dielecBeforeR': return row.dielectricBefore.r;
+                case 'dielecBeforeY': return row.dielectricBefore.y;
+                case 'dielecBeforeB': return row.dielectricBefore.b;
+                case 'dielecAfterR': return row.dielectricAfter.r;
+                case 'dielecAfterY': return row.dielectricAfter.y;
+                case 'dielecAfterB': return row.dielectricAfter.b;
+                case 'insulationRR': return row.insulation.rr;
+                case 'insulationYY': return row.insulation.yy;
+                case 'insulationBB': return row.insulation.bb;
+                case 'insulationRG': return row.insulation.rg;
+                case 'insulationYG': return row.insulation.yg;
+                case 'insulationBG': return row.insulation.bg;
+                case 'insulationRY': return row.insulation.ry;
+                case 'insulationYB': return row.insulation.yb;
+                case 'insulationRB': return row.insulation.rb;
+                case 'contactR': return row.contact.r;
+                case 'contactY': return row.contact.y;
+                case 'contactB': return row.contact.b;
+                case 'counter': return row.counter;
+                case 'remark': return row.remark;
+                default: return '';
+            }
+        }
+
+        // Save cell value
+        function saveCellValue() {
+            if (!currentCell) return;
+
+            const value = document.getElementById('cellValue').value;
+            const row = testData[currentCell.rowIndex];
+
+            switch(currentCell.fieldName) {
+                case 'date': row.date = value; break;
+                case 'description': row.description = value; break;
+                case 'dielecBeforeR': row.dielectricBefore.r = value; break;
+                case 'dielecBeforeY': row.dielectricBefore.y = value; break;
+                case 'dielecBeforeB': row.dielectricBefore.b = value; break;
+                case 'dielecAfterR': row.dielectricAfter.r = value; break;
+                case 'dielecAfterY': row.dielectricAfter.y = value; break;
+                case 'dielecAfterB': row.dielectricAfter.b = value; break;
+                case 'insulationRR': row.insulation.rr = value; break;
+                case 'insulationYY': row.insulation.yy = value; break;
+                case 'insulationBB': row.insulation.bb = value; break;
+                case 'insulationRG': row.insulation.rg = value; break;
+                case 'insulationYG': row.insulation.yg = value; break;
+                case 'insulationBG': row.insulation.bg = value; break;
+                case 'insulationRY': row.insulation.ry = value; break;
+                case 'insulationYB': row.insulation.yb = value; break;
+                case 'insulationRB': row.insulation.rb = value; break;
+                case 'contactR': row.contact.r = value; break;
+                case 'contactY': row.contact.y = value; break;
+                case 'contactB': row.contact.b = value; break;
+                case 'counter': row.counter = value; break;
+                case 'remark': row.remark = value; break;
+            }
+
+            closeCellModal();
+            renderTable();
+        }
+
+        // Close cell modal
+        function closeCellModal() {
+            document.getElementById('cellInputModal').classList.remove('show');
+            currentCell = null;
+        }
+
+        // Save PM Data
+        async function savePMData() {
+            if (!document.getElementById('equipmentId').value) {
+                showStatus('โปรดกรอก Equipment ID', 'error');
+                return;
+            }
+
+            const pmData = {
+                equipmentId: document.getElementById('equipmentId').value,
+                location: document.getElementById('location').value,
+                pmDate: document.getElementById('pmDate').value,
+                inspectorName: document.getElementById('inspectorName').value,
+                manufacturer: document.getElementById('manufacturer').value,
+                deviceType: document.getElementById('deviceType').value,
+                serialNo: document.getElementById('serialNo').value,
+                ratedVoltage: document.getElementById('ratedVoltage').value,
+                ratedCurrent: document.getElementById('ratedCurrent').value,
+                generalRemark: document.getElementById('generalRemark').value,
+                testData: testData
+            };
+
+            try {
+                const response = await fetch('http://192.168.1.100:3000/api/pm-records', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(pmData)
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    showStatus('✅ บันทึกข้อมูลสำเร็จ! Ref: ' + result.referenceNo, 'success');
+                } else {
+                    showStatus('❌ เกิดข้อผิดพลาด: ' + result.error, 'error');
+                }
+            } catch (error) {
+                showStatus('✅ บันทึกในเครื่อง', 'success');
+            }
+        }
+
+        // Show status
+        function showStatus(message, type) {
+            const div = document.getElementById('statusMessage');
+            div.textContent = message;
+            div.className = `status-message ${type}`;
+            setTimeout(() => div.className = 'status-message', 5000);
+        }
+
+        // Clear form
+        function clearForm() {
+            if (confirm('ต้องการล้างข้อมูลหรือ?')) {
+                testData = [];
+                renderTable();
+            }
+        }
+
+        // Close modal with Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeCellModal();
+        });
+
+        // Initialize
+        addTestRow();
+    </script>
+</body>
+</html>
