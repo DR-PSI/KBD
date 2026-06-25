@@ -432,7 +432,7 @@
                 <div class="form-grid">
                     <div class="form-group">
                         <label>MEA No.*</label>
-                        <input type="text" id="equipmentId" placeholder="เช่น TR-001" required>
+                        <input type="text" id="equipmentId" placeholder="e.g. HS" required>
                     </div>
                     <div class="form-group">
                         <label>Location</label>
@@ -611,29 +611,30 @@
         function openCellModal(rowIndex, fieldName) {
             currentCell = { rowIndex, fieldName };
             const row = testData[rowIndex];
+            const cellDate = row.date || new Date().toISOString().split('T')[0];
             const cellLabels = {
-                date: `Row ${rowIndex + 1} - Date`,
-                description: `Row ${rowIndex + 1} - Description`,
-                dielecBeforeR: `Row ${rowIndex + 1} - Dielectric Before (R)`,
-                dielecBeforeY: `Row ${rowIndex + 1} - Dielectric Before (Y)`,
-                dielecBeforeB: `Row ${rowIndex + 1} - Dielectric Before (B)`,
-                dielecAfterR: `Row ${rowIndex + 1} - Dielectric After (R)`,
-                dielecAfterY: `Row ${rowIndex + 1} - Dielectric After (Y)`,
-                dielecAfterB: `Row ${rowIndex + 1} - Dielectric After (B)`,
-                insulationRR: `Row ${rowIndex + 1} - Insulation R:R`,
-                insulationYY: `Row ${rowIndex + 1} - Insulation Y:Y`,
-                insulationBB: `Row ${rowIndex + 1} - Insulation B:B`,
-                insulationRG: `Row ${rowIndex + 1} - Insulation R:G`,
-                insulationYG: `Row ${rowIndex + 1} - Insulation Y:G`,
-                insulationBG: `Row ${rowIndex + 1} - Insulation B:G`,
-                insulationRY: `Row ${rowIndex + 1} - Insulation R:Y`,
-                insulationYB: `Row ${rowIndex + 1} - Insulation Y:B`,
-                insulationRB: `Row ${rowIndex + 1} - Insulation R:B`,
-                contactR: `Row ${rowIndex + 1} - Contact Resistance (R)`,
-                contactY: `Row ${rowIndex + 1} - Contact Resistance (Y)`,
-                contactB: `Row ${rowIndex + 1} - Contact Resistance (B)`,
-                counter: `Row ${rowIndex + 1} - Counter`,
-                remark: `Row ${rowIndex + 1} - Remark`
+                date: `Date: ${cellDate}`,
+                description: `Date: ${cellDate} - Description`,
+                dielecBeforeR: `Date: ${cellDate} - Dielectric Before (R)`,
+                dielecBeforeY: `Date: ${cellDate} - Dielectric Before (Y)`,
+                dielecBeforeB: `Date: ${cellDate} - Dielectric Before (B)`,
+                dielecAfterR: `Date: ${cellDate} - Dielectric After (R)`,
+                dielecAfterY: `Date: ${cellDate} - Dielectric After (Y)`,
+                dielecAfterB: `Date: ${cellDate} - Dielectric After (B)`,
+                insulationRR: `Date: ${cellDate} - Insulation R:R`,
+                insulationYY: `Date: ${cellDate} - Insulation Y:Y`,
+                insulationBB: `Date: ${cellDate} - Insulation B:B`,
+                insulationRG: `Date: ${cellDate} - Insulation R:G`,
+                insulationYG: `Date: ${cellDate} - Insulation Y:G`,
+                insulationBG: `Date: ${cellDate} - Insulation B:G`,
+                insulationRY: `Date: ${cellDate} - Insulation R:Y`,
+                insulationYB: `Date: ${cellDate} - Insulation Y:B`,
+                insulationRB: `Date: ${cellDate} - Insulation R:B`,
+                contactR: `Date: ${cellDate} - Contact Resistance (R)`,
+                contactY: `Date: ${cellDate} - Contact Resistance (Y)`,
+                contactB: `Date: ${cellDate} - Contact Resistance (B)`,
+                counter: `Date: ${cellDate} - Counter`,
+                remark: `Date: ${cellDate} - Remark`
             };
 
             document.getElementById('cellInfo').textContent = cellLabels[fieldName];
