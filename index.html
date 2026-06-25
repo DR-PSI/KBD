@@ -414,7 +414,7 @@
         <!-- Header -->
         <div class="header">
             <h1>⚡ PM Form - Oil Circuit Breaker</h1>
-            <p>ระบบบันทึกข้อมูลการบำรุงรักษาอุปกรณ์ (คลิกเซลล์เพื่อกรอกข้อมูล)</p>
+            <p>Preventive Maintenance Data Recording System</p>
         </div>
 
         <!-- Content -->
@@ -422,32 +422,32 @@
             <div id="statusMessage" class="status-message"></div>
 
             <div class="info-box">
-                ℹ️ คลิกที่เซลล์สีแสด เพื่อกรอกข้อมูล จากนั้นคลิก "บันทึกข้อมูล"
+                ℹ️ คลิกที่เซลล์สีเทา เพื่อกรอกข้อมูล จากนั้นคลิก "บันทึกข้อมูล"
             </div>
 
             <!-- Equipment Information -->
-            <div class="section-title">📋 ข้อมูลอุปกรณ์</div>
+            <div class="section-title">📋 Equipment Information</div>
 
             <div class="two-column">
                 <div class="form-grid">
                     <div class="form-group">
-                        <label>สภาพของสัญลักษณ์อ้างอิง (Equipment ID)*</label>
+                        <label>MEA No.*</label>
                         <input type="text" id="equipmentId" placeholder="เช่น TR-001" required>
                     </div>
                     <div class="form-group">
-                        <label>สำนักงาน (Location)</label>
-                        <input type="text" id="location" placeholder="เช่น สภาส.6">
+                        <label>Location</label>
+                        <input type="text" id="location" placeholder="สถานีไฟฟ้า">
                     </div>
                 </div>
 
                 <div class="form-grid">
                     <div class="form-group">
-                        <label>วันที่ทดสอบ*</label>
+                        <label>Inspection Date*</label>
                         <input type="date" id="pmDate" required>
                     </div>
                     <div class="form-group">
-                        <label>ชื่อผู้ตรวจสอบ*</label>
-                        <input type="text" id="inspectorName" placeholder="ชื่อช่าง" required>
+                        <label>Inspector Name*</label>
+                        <input type="text" id="inspectorName" placeholder="Technician name" required>
                     </div>
                 </div>
             </div>
@@ -456,11 +456,11 @@
                 <div class="form-grid">
                     <div class="form-group">
                         <label>Manufacturer</label>
-                        <input type="text" id="manufacturer" placeholder="เช่น ABB">
+                        <input type="text" id="manufacturer" placeholder="e.g. ABB">
                     </div>
                     <div class="form-group">
                         <label>Type</label>
-                        <input type="text" id="deviceType" placeholder="เช่น OCB-245">
+                        <input type="text" id="deviceType" placeholder="e.g. OCB-245">
                     </div>
                 </div>
 
@@ -471,7 +471,7 @@
                     </div>
                     <div class="form-group">
                         <label>Rated Voltage (kV)</label>
-                        <input type="number" id="ratedVoltage" placeholder="เช่น 33">
+                        <input type="number" id="ratedVoltage" placeholder="69">
                     </div>
                 </div>
             </div>
@@ -479,26 +479,26 @@
             <div class="form-grid">
                 <div class="form-group">
                     <label>Rated Current (A)</label>
-                    <input type="number" id="ratedCurrent" placeholder="เช่น 630">
+                    <input type="number" id="ratedCurrent" placeholder="e.g. 630">
                 </div>
                 <div class="form-group">
-                    <label>หมายเหตุทั่วไป</label>
-                    <textarea id="generalRemark" placeholder="หมายเหตุ"></textarea>
+                    <label>General Remark</label>
+                    <textarea id="generalRemark" placeholder="Notes"></textarea>
                 </div>
             </div>
 
             <!-- Test Results Table -->
-            <div class="section-title">🧪 ผลการทดสอบ (คลิกเซลล์เพื่อกรอกข้อมูล)</div>
+            <div class="section-title">🧪 Test Results (Click to enter data)</div>
 
             <div class="table-wrapper">
                 <table id="testTable">
                     <thead>
                         <tr>
-                            <th colspan="2">ข้อมูล</th>
-                            <th colspan="6">Dielectric Strength (kV)<br>Before | After</th>
-                            <th colspan="11">Insulation Resistance (MΩ)</th>
-                            <th colspan="3">Contact Resistance</th>
-                            <th colspan="2">อื่น</th>
+                            <th colspan="2">Data</th>
+                            <th colspan="6">Dielectric (kV)<br>Before | After</th>
+                            <th colspan="11">Insulation (MΩ)</th>
+                            <th colspan="3">Contact Res.</th>
+                            <th colspan="2">Other</th>
                         </tr>
                         <tr>
                             <th>Date</th>
@@ -508,7 +508,7 @@
                             <th>R:R</th><th>Y:Y</th><th>B:B</th><th>R:G</th><th>Y:G</th>
                             <th>B:G</th><th>R:Y</th><th>Y:B</th><th>R:B</th>
                             <th>R</th><th>Y</th><th>B</th>
-                            <th>Counter</th><th>Remark</th>
+                            <th>Count</th><th>Note</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody">
@@ -518,9 +518,9 @@
 
             <!-- Buttons -->
             <div class="btn-group">
-                <button class="btn-primary" onclick="addTestRow()">➕ เพิ่มแถว</button>
-                <button class="btn-success" onclick="savePMData()">💾 บันทึกข้อมูล</button>
-                <button class="btn-danger" onclick="clearForm()">🗑️ ล้างข้อมูล</button>
+                <button class="btn-primary" onclick="addTestRow()">➕ Add Row</button>
+                <button class="btn-success" onclick="savePMData()">💾 Save</button>
+                <button class="btn-danger" onclick="clearForm()">🗑️ Clear</button>
             </div>
         </div>
     </div>
@@ -529,7 +529,7 @@
     <div id="cellInputModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>📝 กรอกข้อมูล</h3>
+                <h3>📝 Enter Data</h3>
             </div>
 
             <div class="cell-info">
@@ -537,13 +537,13 @@
             </div>
 
             <div>
-                <div class="modal-label">ค่าที่กรอก:</div>
-                <input type="number" id="cellValue" class="modal-input" placeholder="กรอกตัวเลข" step="0.01">
+                <div class="modal-label">Value:</div>
+                <input type="number" id="cellValue" class="modal-input" placeholder="Enter number" step="0.01">
             </div>
 
             <div class="modal-footer">
-                <button class="btn-modal-cancel" onclick="closeCellModal()">ยกเลิก</button>
-                <button class="btn-modal-save" onclick="saveCellValue()">บันทึก</button>
+                <button class="btn-modal-cancel" onclick="closeCellModal()">Cancel</button>
+                <button class="btn-modal-save" onclick="saveCellValue()">Save</button>
             </div>
         </div>
     </div>
@@ -612,8 +612,8 @@
             currentCell = { rowIndex, fieldName };
             const row = testData[rowIndex];
             const cellLabels = {
-                date: `Row ${rowIndex + 1} - วันที่`,
-                description: `Row ${rowIndex + 1} - คำอธิบาย`,
+                date: `Row ${rowIndex + 1} - Date`,
+                description: `Row ${rowIndex + 1} - Description`,
                 dielecBeforeR: `Row ${rowIndex + 1} - Dielectric Before (R)`,
                 dielecBeforeY: `Row ${rowIndex + 1} - Dielectric Before (Y)`,
                 dielecBeforeB: `Row ${rowIndex + 1} - Dielectric Before (B)`,
@@ -716,7 +716,7 @@
         // Save PM Data
         async function savePMData() {
             if (!document.getElementById('equipmentId').value) {
-                showStatus('โปรดกรอก Equipment ID', 'error');
+                showStatus('Please enter MEA No.', 'error');
                 return;
             }
 
@@ -743,12 +743,12 @@
 
                 const result = await response.json();
                 if (result.success) {
-                    showStatus('✅ บันทึกข้อมูลสำเร็จ! Ref: ' + result.referenceNo, 'success');
+                    showStatus('✅ Data saved successfully! Ref: ' + result.referenceNo, 'success');
                 } else {
-                    showStatus('❌ เกิดข้อผิดพลาด: ' + result.error, 'error');
+                    showStatus('❌ Error: ' + result.error, 'error');
                 }
             } catch (error) {
-                showStatus('✅ บันทึกในเครื่อง', 'success');
+                showStatus('✅ Data saved locally', 'success');
             }
         }
 
@@ -762,7 +762,7 @@
 
         // Clear form
         function clearForm() {
-            if (confirm('ต้องการล้างข้อมูลหรือ?')) {
+            if (confirm('Are you sure you want to clear all data?')) {
                 testData = [];
                 renderTable();
             }
